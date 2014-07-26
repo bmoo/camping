@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.0.xsd">
+
+    <changeSet id="1" author="brad">
+        <createTable tableName="CAMP_SITE_DEFINITION">
+            <column name="ID" autoIncrement="true" incrementBy="1" type="integer">
+                <constraints nullable="true" primaryKey="true"/>
+            </column>
+            <column name="DISPLAY_NAME" type="varchar(128)"/>
+            <column name="PARK_ID" type="varchar(128)"/>
+            <column name="CONTRACT_CODE" type="varchar(128)"/>
+        </createTable>
+
+    </changeSet>
+
+    <changeSet id="2" author="brad">
+        <insert tableName="CAMP_SITE_DEFINITION">
+            <column name="DISPLAY_NAME"
+                    value="ONEILL REGIONAL PARK"/>
+            <column name="PARK_ID" value="590437"/>
+            <column name="CONTRACT_CODE" value="ORNG"/>
+        </insert>
+
+    </changeSet>
+
+    <changeSet id="3" author="brad">
+        <createTable tableName="RESERVATION_REQUEST">
+            <column name="ID" autoIncrement="true" incrementBy="1" type="integer">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="CAMP_SITE_DEFINITION_FK" type="integer">
+                <constraints nullable="false"/>
+            </column>
+            <column name="START_DATE" type="date">
+                <constraints nullable="false"/>
+            </column>
+            <column name="LENGTH_OF_STAY" type="integer">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addForeignKeyConstraint baseTableName="RESERVATION_REQUEST" baseColumnNames="CAMP_SITE_DEFINITION_FK"
+                                 constraintName="RESERVATION_SITE_DEFINITION_FK"
+                                 referencedTableName="CAMP_SITE_DEFINITION"
+                                 referencedColumnNames="ID"/>
+
+        <createTable tableName="SITE">
+            <column name="ID" autoIncrement="true" incrementBy="1" type="integer">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="SITE_NUMBER" type="integer">
+                <constraints nullable="false"/>
+            </column>
+            <column name="SITE_RESERVATION_REQUEST_FK" type="integer">
+                <constraints nullable="false"/>
+            </column>
+            <column name="PRIORITY" type="integer">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addForeignKeyConstraint baseTableName="SITE" baseColumnNames="SITE_RESERVATION_REQUEST_FK"
+                                 constraintName="SITE_SITE_RESERVATION_FK"
+                                 referencedTableName="RESERVATION_REQUEST"
+                                 referencedColumnNames="ID"/>
+    </changeSet>
+</databaseChangeLog>

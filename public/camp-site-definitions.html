@@ -1,0 +1,62 @@
+<!doctype html>
+<html ng-app="monitor">
+<head>
+    <title>Camp Site Definitions</title>
+    <script src="bower_components/angular/angular.js"></script>
+    <script src="bower_components/angular-bootstrap/ui-bootstrap.js"/>
+    <script src="camp-site-definitions.js"></script>
+</head>
+
+<body>
+
+<div ng-controller="SiteDefinitionController">
+    <form>
+
+        <label class="requiredLabel" for="targetUrl">Email</label>
+        <input class="span3" placeholder="Enter URL" type="targetUrl" id="targetUrl" name="targetUrl" required
+               data-ng-model="newDefinitionForm">
+
+        <input type="text" name="targetUrl" ng-model="newDefinitionForm.targetUrl"/>URL<br/>
+        <input type="text" name="contractCode" ng-model="newDefinitionForm.contractCode"/>Contract Code<br/>
+        <input type="text" name="numberOfLots" ng-model="newDefinitionForm.numberOfLots"/>Number of Lots<br/>
+        <input type="submit" ng-click="setNewForm"/>
+    </form>
+</div>
+
+<div ng-controller="SiteDefinitionController" ng-show="newDefinitionForm.URL">
+    {{ newDefinitionForm.URL }}
+</div>
+
+<div ng-controller="Controller">
+    <form novalidate class="simple-form">
+        Name: <input type="text" ng-model="user.name" /><br />
+        E-mail: <input type="email" ng-model="user.email" /><br />
+        Gender: <input type="radio" ng-model="user.gender" value="male" />male
+        <input type="radio" ng-model="user.gender" value="female" />female<br />
+        <button ng-click="reset()">RESET</button>
+        <button ng-click="update(user)">SAVE</button>
+    </form>
+    <pre>form = {{user | json}}</pre>
+    <pre>master = {{master | json}}</pre>
+</div>
+
+<script>
+    function Controller($scope) {
+        $scope.master = {};
+
+        $scope.update = function(user) {
+            $scope.master = angular.copy(user);
+        };
+
+        $scope.reset = function() {
+            $scope.user = angular.copy($scope.master);
+        };
+
+        $scope.reset();
+    }
+</script>
+
+<link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css">
+
+</body>
+</html>

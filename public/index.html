@@ -1,0 +1,28 @@
+<!doctype html>
+<html ng-app="monitor">
+<head>
+    <title>Hello AngularJS</title>
+    <script src="bower_components/angular/angular.js"></script>
+    <script src="bower_components/angular-bootstrap/ui-bootstrap.js"/>
+    <script src="index.js"></script>
+</head>
+
+<body>
+<div>
+    <a href="camp-site-definitions.html">Site Definitions</a>
+</div>
+
+<div ng-controller="SiteDefinitionController">
+    <form>
+        <input type="text" name="URL" ng-model="newDefinitionForm.URL"/>URL<br/>
+        <input type="submit" ng-click="setNewForm"/>
+    </form>
+</div>
+
+<div ng-controller="SiteDefinitionController" ng-show="newDefinitionForm.URL">
+    {{ newDefinitionForm.URL }}
+</div>
+
+</div>
+</body>
+</html>
