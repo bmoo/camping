@@ -40,6 +40,7 @@ dependencies {
     compile("org.liquibase:liquibase-core")
 
     testCompile("org.springframework.boot:spring-boot-starter-test")
+    testCompile 'org.assertj:assertj-core:1.6.1'
 
     // other external dependencies
     compile('net.sf.jtidy:jtidy:r938')
@@ -49,9 +50,4 @@ dependencies {
     compile("com.sun.mail:smtp:1.4.5")
     compile 'org.jsoup:jsoup:1.7.3'
     compile 'org.apache.httpcomponents:httpclient'
-}
-
-tasks.withType(Test) {
-    scanForTestClasses = false
-    include "**/*Test.class" // whatever Ant pattern matches your test class files
 }
