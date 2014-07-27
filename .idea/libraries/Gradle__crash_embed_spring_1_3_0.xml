@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="Gradle: crash.embed.spring-1.3.0">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.crashub/crash.embed.spring/1.3.0/5c4009e9a90786751cf7c3ae7a8c86c05aa05994/crash.embed.spring-1.3.0.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.crashub/crash.embed.spring/1.3.0/84bccf1e06719bdfb95933353ab2b2b397eebe2a/crash.embed.spring-1.3.0-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
