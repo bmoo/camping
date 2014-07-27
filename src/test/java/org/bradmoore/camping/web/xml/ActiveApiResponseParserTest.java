@@ -11,7 +11,9 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.List;
@@ -28,22 +30,26 @@ public class ActiveApiResponseParserTest {
 
 	@Test
 	public void testParsePageForSites() throws Exception {
-		final String apiResponse = this.readSampleResponseAsXmlString();
+		final InputStream apiResponse = this.readSampleResponseAsXmlString();
 
 		final CampSitesResult campSitesResult = activeApiResponseParser.parseCampSiteApiResponseXmlString(apiResponse);
 
 		assertThat(campSitesResult).isNotNull();
-		assertThat(campSitesResult.getSiteResults()).isNotNull();
-		assertThat(campSitesResult.getSiteResults()).isNotEmpty();
 
+		assertThat(campSitesResult.getParkId()).isEqualTo(590437);
+		assertThat(campSitesResult.getContractCode()).isEqualTo("ORNG");
+		assertThat(campSitesResult.getCount()).isEqualTo(72);
+
+		assertThat(campSitesResult.getSiteResults()).isNotNull();
+		assertThat(campSitesResult.getSiteResults()).hasSize(72);
 	}
 
-	public String readSampleResponseAsXmlString() {
+	public InputStream readSampleResponseAsXmlString() {
 		Resource resource = new ClassPathResource(SAMPLE_CAMP_SITE_RESPONSE_XML_FILE);
 
 		try {
 			byte[] encoded = Files.readAllBytes(resource.getFile().toPath());
-			return new String(encoded, StandardCharsets.UTF_8);
+			return new ByteArrayInputStream(encoded);
 		} catch (IOException e) {
 			throw new RuntimeException("Can't read test input file");
 		}
