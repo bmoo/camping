@@ -3,7 +3,7 @@ package org.bradmoore.camping.integration.campsite;
 import org.apache.commons.lang3.StringUtils;
 import org.bradmoore.camping.support.EmailMessageSender;
 import org.bradmoore.camping.support.PriorityDeterminer;
-import org.bradmoore.camping.domain.Site;
+import org.bradmoore.camping.web.xml.domain.SiteResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.integration.annotation.ServiceActivator;
 import org.springframework.stereotype.Component;
@@ -21,20 +21,17 @@ public class SiteConsumer {
 	private EmailMessageSender messageSender;
 
 	@ServiceActivator(inputChannel = "sitesChannel", autoStartup = "${spring.integration.active-api.start}")
-	public void notifyOfAnyAvailableSites(List<Site> sites) {
+	public void notifyOfAnyAvailableSites(List<SiteResult> sites) {
 
 		final List<String> normalMessages = new ArrayList<>();
 		final List<String> priorityMessages = new ArrayList<>();
 		final List<String> highPriorityMessages = new ArrayList<>();
 
-		for (Site site : sites) {
+		for (SiteResult site : sites) {
 
-			final List<String> siteMessages = new ArrayList<>();
+			String message = buildSiteMessageListForSite(site);
 
-			buildSiteMessageListForSite(site, siteMessages);
-
-			routeSiteMessagesToPriorityList(normalMessages, priorityMessages, highPriorityMessages, site,
-			  siteMessages);
+			routeSiteMessagesToPriorityList(normalMessages, priorityMessages, highPriorityMessages, site, message);
 		}
 		sendHighPriorityMessage(highPriorityMessages);
 		sendPriorityMessage(priorityMessages);
@@ -42,28 +39,18 @@ public class SiteConsumer {
 	}
 
 	private void routeSiteMessagesToPriorityList(List<String> normalMessages, List<String> priorityMessages,
-	  List<String> highPriorityMessages, Site site, List<String> siteMessages) {
-		if (!siteMessages.isEmpty()) {
-			if (priorityDeterminer.isHighPriority(site)) {
-				highPriorityMessages
-				  .add(StringUtils.join(siteMessages, ""));
-			} else if (priorityDeterminer.isPriority(site)) {
-				priorityMessages.add(StringUtils.join(siteMessages, ""));
-			} else {
-				normalMessages.add(StringUtils.join(siteMessages, ""));
-			}
+	  List<String> highPriorityMessages, SiteResult site, String message) {
+		if (priorityDeterminer.isHighPriority(site)) {
+			highPriorityMessages.add(StringUtils.join(message, ""));
+		} else if (priorityDeterminer.isPriority(site)) {
+			priorityMessages.add(StringUtils.join(message, ""));
+		} else {
+			normalMessages.add(StringUtils.join(message, ""));
 		}
 	}
 
-	private void buildSiteMessageListForSite(Site site, List<String> siteMessages) {
-		site.getDays().stream().filter(day -> day.isAvailable()).forEach(day -> {
-			if (siteMessages.isEmpty()) {
-				siteMessages.add("Site [" + site.getSiteNumber() + "] has availability on ");
-			} else {
-				siteMessages.add(", ");
-			}
-			siteMessages.add(day.getDayOfWeek() + "-" + day.getDayOfMonth());
-		});
+	private String buildSiteMessageListForSite(SiteResult site) {
+		return "Site [" + site.getSite() + "] has availability";
 	}
 
 	protected void sendHighPriorityMessage(List<String> messages) {
@@ -80,8 +67,7 @@ public class SiteConsumer {
 
 	protected void sendMessage(List<String> messages, String subjectPrefix) {
 		if (messages.size() > 0) {
-			messageSender.sendMessageWithSubject(concatenateMessage(messages),
-			  subjectPrefix);
+			messageSender.sendMessageWithSubject(concatenateMessage(messages), subjectPrefix);
 		}
 	}
 

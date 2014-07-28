@@ -1,16 +1,16 @@
 package org.bradmoore.camping.integration.campsite;
 
-import org.bradmoore.camping.domain.Site;
 import org.bradmoore.camping.support.RecreationGovSiteFilter;
 import org.bradmoore.camping.web.http.ActiveApiDataRetrieval;
 import org.bradmoore.camping.web.xml.ActiveApiResponseParser;
 import org.bradmoore.camping.web.xml.domain.CampSitesResult;
+import org.bradmoore.camping.web.xml.domain.SiteResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.integration.annotation.InboundChannelAdapter;
 import org.springframework.integration.annotation.Poller;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
+import java.io.InputStream;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -30,11 +30,11 @@ public class SiteProducer {
 
 	@InboundChannelAdapter(poller = @Poller(fixedRate = "300000", maxMessagesPerPoll = "1"), value = "sitesChannel",
 	  autoStartup = "${spring.integration.active-api.start}")
-	public List<Site> produceSiteList() {
-		List<String> webPages = retriever.getXmlSiteLists();
+	public List<SiteResult> produceSiteList() {
+		List<InputStream> webPages = retriever.getXmlSiteLists();
 
-//		final List<CampSitesResult> results = webPages.parallelStream().map(page -> parser.parseCampSiteApiResponseXmlString
-//		  (page)).collect(Collectors.toList());
+		final List<CampSitesResult> results = webPages.parallelStream().map(page -> parser.parseCampSiteApiResponseXmlString
+		  (page)).collect(Collectors.toList());
 
 		return null;
 

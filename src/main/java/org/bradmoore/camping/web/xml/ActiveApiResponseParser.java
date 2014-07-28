@@ -68,7 +68,7 @@ public class ActiveApiResponseParser {
 			MapCoordinates mapCoordinates = getMapCoordinates(mapX, mapY);
 
 			SiteResult siteResult = new SiteResult(loop, getInteger(maxEquipmentLength), getInteger(maxPeople),
-			  site, getInteger(siteId), ReservationType.SITE_SPECIFIC, SiteType.STANDARD_NON_ELECTRIC,
+			  getInteger(site), getInteger(siteId), ReservationType.SITE_SPECIFIC, SiteType.STANDARD_NON_ELECTRIC,
 			  mapCoordinates, sitePhoto, getInteger(sitesWithAmps), getBoolean(sitesWithPetsAllowed),
 			  getBoolean(sitesWithSewerHookup), getBoolean(sitesWithWaterHookup), null);
 

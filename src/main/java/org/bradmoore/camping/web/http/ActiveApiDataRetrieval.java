@@ -19,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
@@ -36,20 +37,20 @@ public class ActiveApiDataRetrieval {
 	@Autowired
 	private RetrievalHeaderHandler retrievalHeaderHandler;
 
-	public List<String> getXmlSiteLists() {
-		final List<String> webPages = new ArrayList<>();
+	public List<InputStream> getXmlSiteLists() {
+		final List<InputStream> responses = new ArrayList<>();
 
 		final Iterable<ReservationRequest> reservationRequests = reservationRequestRepository.findAll();
 
 		for (ReservationRequest reservationRequest : reservationRequests) {
 			HttpClient httpClient = HttpClients.createDefault();
-				webPages.add(getXmlFromReservationRequest(httpClient, reservationRequest));
+				responses.add(getXmlFromReservationRequest(httpClient, reservationRequest));
 		}
 
-		return webPages;
+		return responses;
 	}
 
-	protected String getXmlFromReservationRequest(HttpClient httpClient, ReservationRequest reservationRequest) {
+	protected InputStream getXmlFromReservationRequest(HttpClient httpClient, ReservationRequest reservationRequest) {
 		HttpGet httpGet = buildHttpGet(reservationRequest);
 		return sendHttpGetAndReturnResponseString(httpClient, httpGet);
 	}
@@ -72,7 +73,7 @@ public class ActiveApiDataRetrieval {
 		return request;
 	}
 
-	private String sendHttpGetAndReturnResponseString(HttpClient httpClient, HttpGet request) {
+	private InputStream sendHttpGetAndReturnResponseString(HttpClient httpClient, HttpGet request) {
 		try {
 			CookieStore cookieStore = new BasicCookieStore();
 			HttpContext httpContext = new BasicHttpContext();
@@ -82,7 +83,7 @@ public class ActiveApiDataRetrieval {
 
 			checkForGoodStatusCode(response);
 
-			return EntityUtils.toString(response.getEntity());
+			return response.getEntity().getContent();
 
 		} catch (IOException e) {
 			e.printStackTrace();

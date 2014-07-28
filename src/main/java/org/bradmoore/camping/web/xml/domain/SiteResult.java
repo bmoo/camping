@@ -9,7 +9,7 @@ public class SiteResult {
 	private final String loop;
 	private final Integer maxEquipmentLength;
 	private final Integer maxPeople;
-	private final String site;
+	private final Integer site;
 	private final Integer siteId;
 	private final ReservationType reservationType;
 	private final SiteType siteType;
@@ -21,7 +21,7 @@ public class SiteResult {
 	private final Boolean hasWaterHookup;
 	private final Boolean hasWaterFront;
 
-	public SiteResult(String loop, Integer maxEquipmentLength, Integer maxPeople, String site, Integer siteId,
+	public SiteResult(String loop, Integer maxEquipmentLength, Integer maxPeople, Integer site, Integer siteId,
 	  ReservationType reservationType, SiteType siteType, MapCoordinates mapCoordinates, String sitePhotoUrl,
 	  Integer sitesWithAmps, Boolean allowsPets, Boolean hasSewerHookup, Boolean hasWaterHookup,
 	  Boolean hasWaterFront) {
@@ -53,7 +53,7 @@ public class SiteResult {
 		return maxPeople;
 	}
 
-	public String getSite() {
+	public Integer getSite() {
 		return site;
 	}
 

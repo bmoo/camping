@@ -1,13 +1,10 @@
 package org.bradmoore.camping.support;
 
-import org.bradmoore.camping.domain.DayAvailability;
-import org.bradmoore.camping.domain.Site;
-import org.joda.time.LocalDate;
+import org.bradmoore.camping.web.xml.domain.SiteResult;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 import java.util.Arrays;
-import java.util.List;
 
 @Component
 public class PriorityDeterminer {
@@ -18,52 +15,24 @@ public class PriorityDeterminer {
 	@Resource(name = "highPrioritySites")
 	private int[] highPrioritySites;
 
-	@Resource(name = "priorityDates")
-	private LocalDate[] highPriorityDates;
-
-	public boolean isHighPriority(Site site) {
-		final int siteNumber = site.getSiteNumber();
+	public boolean isHighPriority(SiteResult site) {
+		final int siteNumber = site.getSite();
 
 		if (Arrays.asList(highPrioritySites).contains(siteNumber)) {
 			return true;
-		} else if (Arrays.asList(prioritySites).contains(siteNumber)) {
-			return doesSiteContainHighPriorityDates(site);
 		} else {
 			return false;
 		}
 	}
 
-	public boolean isPriority(Site site) {
-		final int siteNumber = site.getSiteNumber();
+	public boolean isPriority(SiteResult site) {
+		final int siteNumber = site.getSite();
 
 		if (Arrays.asList(prioritySites).contains(siteNumber)) {
 			return true;
 		} else {
-			return doesSiteContainHighPriorityDates(site);
-		}
-
-	}
-
-	protected boolean doesSiteContainHighPriorityDates(Site site) {
-		final List<DayAvailability> days = site.getDays();
-		if (days == null) {
 			return false;
 		}
 
-		for (DayAvailability day : days) {
-			if (isDateHighPriority(day.getDate())) {
-				return true;
-			}
-		}
-		return false;
-	}
-
-	protected boolean isDateHighPriority(LocalDate checkDate) {
-		for (LocalDate hpDate : highPriorityDates) {
-			if (checkDate.isEqual(hpDate)) {
-				return true;
-			}
-		}
-		return false;
 	}
 }

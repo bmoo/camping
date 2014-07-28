@@ -1,7 +1,6 @@
 package org.bradmoore.camping.web.xml;
 
 import org.bradmoore.camping.Application;
-import org.bradmoore.camping.domain.Site;
 import org.bradmoore.camping.web.xml.domain.CampSitesResult;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -14,11 +13,9 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.util.List;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = Application.class)
