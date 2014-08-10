@@ -4,10 +4,15 @@ import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.CookieStore;
 import org.apache.http.client.HttpClient;
+import org.apache.http.client.config.CookieSpecs;
+import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.params.ClientPNames;
+import org.apache.http.client.params.CookiePolicy;
 import org.apache.http.client.protocol.HttpClientContext;
 import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.impl.client.BasicCookieStore;
+import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.protocol.BasicHttpContext;
 import org.apache.http.protocol.HttpContext;
@@ -38,24 +43,37 @@ public class ActiveApiDataRetrieval {
 		final Iterable<ReservationRequest> reservationRequests = reservationRequestRepository.findAll();
 
 		for (ReservationRequest reservationRequest : reservationRequests) {
-			HttpClient httpClient = HttpClients.createDefault();
-				responses.add(getXmlFromReservationRequest(httpClient, reservationRequest));
+
+			RequestConfig globalConfig = RequestConfig.custom()
+			  .setCookieSpec(CookieSpecs.BEST_MATCH)
+			  .build();
+			CloseableHttpClient httpClient = HttpClients.custom()
+			  .setDefaultRequestConfig(globalConfig)
+			  .build();
+			responses.add(getXmlFromReservationRequest(httpClient, reservationRequest, globalConfig));
 		}
 
 		return responses;
 	}
 
-	protected InputStream getXmlFromReservationRequest(HttpClient httpClient, ReservationRequest reservationRequest) {
-		HttpGet httpGet = buildHttpGet(reservationRequest);
+	protected InputStream getXmlFromReservationRequest(HttpClient httpClient, ReservationRequest reservationRequest,
+	  RequestConfig requestConfig) {
+		HttpGet httpGet = buildHttpGet(reservationRequest, requestConfig);
 		return sendHttpGetAndReturnResponseString(httpClient, httpGet);
 	}
 
-	private HttpGet buildHttpGet(ReservationRequest reservationRequest) {
+	private HttpGet buildHttpGet(ReservationRequest reservationRequest, RequestConfig requestConfig) {
 		HttpGet request = null;
 		try {
+			// build cookie policy
+			RequestConfig localConfig = RequestConfig.copy(requestConfig)
+			  .setCookieSpec(CookieSpecs.IGNORE_COOKIES)
+			  .build();
+
 			URIBuilder uriBuilder = retrievalHeaderHandler.createUriRequest(reservationRequest);
 			URI uri = uriBuilder.build();
 			request = new HttpGet(uri);
+			request.setConfig(localConfig);
 
 			System.out.println("Request URI:   " + uri.toString());
 		} catch (URISyntaxException e) {

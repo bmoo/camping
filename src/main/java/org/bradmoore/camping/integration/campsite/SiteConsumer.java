@@ -3,6 +3,7 @@ package org.bradmoore.camping.integration.campsite;
 import org.apache.commons.lang3.StringUtils;
 import org.bradmoore.camping.support.EmailMessageSender;
 import org.bradmoore.camping.support.PriorityDeterminer;
+import org.bradmoore.camping.web.xml.domain.CampSitesResult;
 import org.bradmoore.camping.web.xml.domain.SiteResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.integration.annotation.ServiceActivator;
@@ -21,17 +22,19 @@ public class SiteConsumer {
 	private EmailMessageSender messageSender;
 
 	@ServiceActivator(inputChannel = "sitesChannel", autoStartup = "${spring.integration.active-api.start}")
-	public void notifyOfAnyAvailableSites(List<SiteResult> sites) {
+	public void notifyOfAnyAvailableSites(List<CampSitesResult> sites) {
 
 		final List<String> normalMessages = new ArrayList<>();
 		final List<String> priorityMessages = new ArrayList<>();
 		final List<String> highPriorityMessages = new ArrayList<>();
 
-		for (SiteResult site : sites) {
+		for (CampSitesResult campSitesResult : sites) {
+			for (SiteResult site : campSitesResult.getSiteResults()) {
 
-			String message = buildSiteMessageListForSite(site);
+				String message = buildSiteMessageListForSite(site);
 
-			routeSiteMessagesToPriorityList(normalMessages, priorityMessages, highPriorityMessages, site, message);
+				routeSiteMessagesToPriorityList(normalMessages, priorityMessages, highPriorityMessages, site, message);
+			}
 		}
 		sendHighPriorityMessage(highPriorityMessages);
 		sendPriorityMessage(priorityMessages);

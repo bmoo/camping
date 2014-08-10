@@ -30,13 +30,13 @@ public class SiteProducer {
 
 	@InboundChannelAdapter(poller = @Poller(fixedRate = "30000", maxMessagesPerPoll = "1"), value = "sitesChannel",
 	  autoStartup = "${spring.integration.active-api.start}")
-	public List<SiteResult> produceSiteList() {
+	public List<CampSitesResult> produceSiteList() {
 		List<InputStream> webPages = retriever.getXmlSiteLists();
 
 		final List<CampSitesResult> results = webPages.parallelStream().map(page -> parser.parseCampSiteApiResponseXmlString
 		  (page)).collect(Collectors.toList());
 
-		return null;
+		return results;
 
 //		return siteFilter.filterSites(allSites);
 	}
