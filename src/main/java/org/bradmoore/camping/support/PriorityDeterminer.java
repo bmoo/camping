@@ -9,10 +9,8 @@ import java.util.Arrays;
 @Component
 public class PriorityDeterminer {
 
-	@Resource(name = "prioritySites")
 	private int[] prioritySites;
 
-	@Resource(name = "highPrioritySites")
 	private int[] highPrioritySites;
 
 	public boolean isHighPriority(SiteResult site) {

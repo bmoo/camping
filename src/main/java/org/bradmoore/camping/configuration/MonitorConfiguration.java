@@ -17,8 +17,7 @@ import java.util.Properties;
  */
 @Configuration
 @EnableIntegration
-@Import({ FilterConfiguration.class, PriorityConfiguration.class,
-  RecreationConfiguration.class })
+@Import({ FilterConfiguration.class, RecreationConfiguration.class })
 public class MonitorConfiguration {
 
 	@Bean
@@ -39,8 +38,7 @@ public class MonitorConfiguration {
 
 	@Bean
 	public Properties javaMailProperties(@Value("${mail.smtp.auth}") String auth,
-	  @Value("${mail.smtp.starttls.enable}")
-	  String tlsEnable, @Value("${mail.smtp.quitwait}") String quitWait) {
+	  @Value("${mail.smtp.starttls.enable}") String tlsEnable, @Value("${mail.smtp.quitwait}") String quitWait) {
 
 		Properties properties = new Properties();
 		properties.setProperty("mail.smtp.auth", auth);

@@ -3,13 +3,13 @@ package org.bradmoore.camping.web.http;
 import org.apache.http.client.utils.URIBuilder;
 import org.bradmoore.camping.domain.entity.CampSiteDefinition;
 import org.bradmoore.camping.domain.entity.ReservationRequest;
-import org.joda.time.LocalDate;
 import org.joda.time.format.DateTimeFormatter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.net.URISyntaxException;
+import org.joda.time.LocalDate;
 
 @Component
 public class RetrievalHeaderHandler {
@@ -47,7 +47,10 @@ public class RetrievalHeaderHandler {
 		return uriBuilder;
 	}
 
-	private String getStartDateAsString(LocalDate startDate) {
-		return startDate.toString(this.dateFormat);
+	private String getStartDateAsString(java.sql.Date startDate) {
+
+		LocalDate localDate = new LocalDate(startDate);
+
+		return localDate.toString(this.dateFormat);
 	}
 }

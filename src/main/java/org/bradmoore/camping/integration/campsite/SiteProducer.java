@@ -28,7 +28,7 @@ public class SiteProducer {
 	@Autowired
 	private RecreationGovSiteFilter siteFilter;
 
-	@InboundChannelAdapter(poller = @Poller(fixedRate = "300000", maxMessagesPerPoll = "1"), value = "sitesChannel",
+	@InboundChannelAdapter(poller = @Poller(fixedRate = "30000", maxMessagesPerPoll = "1"), value = "sitesChannel",
 	  autoStartup = "${spring.integration.active-api.start}")
 	public List<SiteResult> produceSiteList() {
 		List<InputStream> webPages = retriever.getXmlSiteLists();

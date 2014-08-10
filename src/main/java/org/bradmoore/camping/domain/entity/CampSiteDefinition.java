@@ -13,8 +13,13 @@ public class CampSiteDefinition {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer id;
 
+	@Column(name = "DISPLAY_NAME")
 	private String displayName;
+
+	@Column(name = "PARK_ID")
 	private String parkId;
+
+	@Column(name = "CONTRACT_CODE")
 	private String contractCode;
 
 	protected CampSiteDefinition() {}

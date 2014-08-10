@@ -1,8 +1,7 @@
 package org.bradmoore.camping.domain.entity;
 
-import org.joda.time.LocalDate;
-
 import javax.persistence.*;
+import java.sql.Date;
 import java.util.List;
 
 /**
@@ -21,7 +20,7 @@ public class ReservationRequest {
 	private CampSiteDefinition campSiteDefinition;
 
 	@Column(name = "START_DATE", nullable = false)
-	private LocalDate startDate;
+	private Date startDate;
 
 	@Column(name = "LENGTH_OF_STAY", nullable = false)
 	private Integer lengthInDays;
@@ -45,11 +44,11 @@ public class ReservationRequest {
 		this.campSiteDefinition = campSiteDefinition;
 	}
 
-	public LocalDate getStartDate() {
+	public Date getStartDate() {
 		return startDate;
 	}
 
-	public void setStartDate(LocalDate startDate) {
+	public void setStartDate(Date startDate) {
 		this.startDate = startDate;
 	}
 

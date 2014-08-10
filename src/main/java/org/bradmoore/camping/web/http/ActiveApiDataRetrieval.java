@@ -11,10 +11,8 @@ import org.apache.http.impl.client.BasicCookieStore;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.protocol.BasicHttpContext;
 import org.apache.http.protocol.HttpContext;
-import org.apache.http.util.EntityUtils;
 import org.bradmoore.camping.domain.entity.ReservationRequest;
 import org.bradmoore.camping.domain.repository.ReservationRequestRepository;
-import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -27,9 +25,6 @@ import java.util.List;
 
 @Component
 public class ActiveApiDataRetrieval {
-
-	@Autowired
-	private LocalDate startDate;
 
 	@Autowired
 	private ReservationRequestRepository reservationRequestRepository;
