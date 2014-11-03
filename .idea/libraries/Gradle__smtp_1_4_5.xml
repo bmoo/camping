@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="Gradle: smtp-1.4.5">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.sun.mail/smtp/1.4.5/140f803b78b4eb0e0f6e3c41935f7dc32b96ad9b/smtp-1.4.5.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.sun.mail/smtp/1.4.5/8d9b1a299a8975844e86e576c3931e9c726c6028/smtp-1.4.5-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
